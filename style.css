@@ -1,0 +1,133 @@
+HTML {
+  background-color: #000;
+}
+
+BODY {
+  background-color: #000;
+  color: #FFF;
+  margin: 0;
+  font-family: Arial, Verdana, sans-serif;;
+  font-size: 22px;
+  text-decoration: none;
+  font-weight: normal;
+  line-height: 1.5;
+  text-align: center;
+}
+
+H1 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+A {
+  text-decoration: none;
+  color: #0080FF;
+}
+
+A:not(:has(img)):HOVER {
+  color: #000;
+  background: #FF00FF;
+}
+
+A:visited {
+color: #FF00FF;
+}
+
+.tight {
+  padding: 0;
+  margin: 0;
+  border-spacing: 0;
+}
+
+.full {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.standard {
+  text-align: center;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0px auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.colored {
+  background-color: #222;
+}
+
+.logo {
+  margin: 16px;
+  max-width: 2048px;
+  width: 95vw;
+  height: auto;
+  display: block;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  max-width: 1018px;
+  margin: 0 auto;
+}
+
+.s1018 {
+  width: 1018px;
+}
+
+.images {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.image-container {
+  display: block;
+  white-space: nowrap;
+}
+
+.image-container img {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover; /* Add this property */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Default for mobile */
+  gap: 5px;
+  max-width: 1018px;
+  margin: 0 auto;
+  line-height: 0;
+}
+
+.grid-item {
+  /* Set a fixed height for the grid items */
+  height: auto; /* Remove the fixed height */
+  overflow: hidden; /* Hide overflowing content to maintain uniformity */
+}
+
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(8, 1fr); /* photos per row on desktop */
+    gap: 10px;
+  }
+}
+
+.over tr:HOVER {
+  background: #222;
+}
+
+.release_heading {
+  margin: 0;
+}
+
+.justifyText {
+  text-align: center;
+}

@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+error_log
+error_log.*
+*.log
+*.bak
+*.tmp
+.well-known/acme-challenge/
+.well-known/pki-validation/
+.DS_Store
+Thumbs.db

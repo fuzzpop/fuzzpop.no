@@ -1,0 +1,7 @@
+
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^fuzzpop\.no$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.fuzzpop\.no$
+RewriteRule ^(.*)$ "https\:\/\/fuzzpop\.no\/$1" [R=301,L]
