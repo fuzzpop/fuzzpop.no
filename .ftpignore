@@ -1,10 +1,11 @@
-# Repository-only files; deployment is not configured yet.
+# Repository-only files
 .git/**
 .github/**
 .dev/**
 .githooks/**
 .vscode/**
 tests/**
+.editorconfig
 .gitignore
 .ftpignore
 README.md

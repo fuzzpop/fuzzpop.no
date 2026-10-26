@@ -9,8 +9,46 @@ The baseline contains the PHP pages, styles, scripts, release metadata, tracklis
 and images. Server error logs and certificate-validation files are excluded.
 
 This import preserves the existing website rather than changing its behavior.
-Automatic deployment is not configured. Do not upload repository-only files to
-Host1; `.ftpignore` records those exclusions for future deployment tooling.
+
+## Deployment
+
+The [Deploy site workflow](.github/workflows/deploy.yml) uses SFTP to deploy
+website changes pushed to `main`, following the Pekosoft deployment approach.
+Repository-only changes do not trigger deployment. Both incremental uploads
+and full syncs use [.ftpignore](.ftpignore) to exclude development files,
+documentation, secrets, logs and server-managed certificate-validation files.
+Keep the workflow's `paths-ignore` list consistent when changing these exclusions.
+
+Before the first deployment, configure these
+[GitHub Actions secrets](https://github.com/fuzzpop/fuzzpop.no/settings/secrets/actions):
+
+- `SFTP_HOST`: Host1 SFTP hostname.
+- `SFTP_USERNAME`: account with access to the Fuzz Pop website directory.
+- `SFTP_PASSWORD`: that account's password.
+
+Configure these
+[GitHub Actions variables](https://github.com/fuzzpop/fuzzpop.no/settings/variables/actions):
+
+- `SFTP_REMOTE_DIR`: the absolute Fuzz Pop document root on Host1. Verify this
+  against the hosting configuration; do not use the Pekosoft directory.
+- `SFTP_PORT`: optional; defaults to `22`.
+
+The workflow fails explicitly if required settings are missing. It learns the
+SFTP host key with `ssh-keyscan`, matching Pekosoft's existing setup.
+
+For the first deployment, open
+[Actions](https://github.com/fuzzpop/fuzzpop.no/actions/workflows/deploy.yml),
+select **Run workflow**, and choose **full**. A full sync uploads the website
+and removes files absent from the repository inside `disco`, `disco_photos`
+and `disco_photos_small`, including withdrawn releases still on the host.
+It does not delete extra files elsewhere on the host, and exclusions remain
+protected. Review the destination before starting a full sync.
+
+Subsequent pushes deploy all website additions, changes, renames and deletions
+in that push. Manual **changed** runs compare the latest commit with its parent;
+use **full** to recover from a failed deployment or reconcile the entire site.
+Deployments run one at a time. This workflow does not generate Pekosoft's
+updates feed, which Fuzz Pop does not use.
 
 ## Local preview
 

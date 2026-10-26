@@ -1,0 +1,249 @@
+name: Deploy site
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - .git/**
+      - .github/**
+      - .dev/**
+      - .githooks/**
+      - .vscode/**
+      - tests/**
+      - .editorconfig
+      - .gitignore
+      - .ftpignore
+      - README.md
+      - LICENCE
+      - THIRD-PARTY-LICENCES
+      - .env
+      - .env.*
+      - '**/*.pem'
+      - '**/*.key'
+      - '**/*.p12'
+      - '**/*.pfx'
+      - '**/error_log'
+      - '**/error_log.*'
+      - '**/*.log'
+      - '**/*.bak'
+      - '**/*.tmp'
+      - .well-known/acme-challenge/**
+      - .well-known/pki-validation/**
+      - '**/.DS_Store'
+      - '**/Thumbs.db'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Deployment mode
+        required: true
+        type: choice
+        default: changed
+        options:
+          - changed
+          - full
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Upload via SFTP
+    runs-on: ubuntu-latest
+    env:
+      SFTP_HOST: ${{ secrets.SFTP_HOST }}
+      SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+      SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+      SFTP_PORT: ${{ vars.SFTP_PORT || '22' }}
+      SFTP_REMOTE_DIR: ${{ vars.SFTP_REMOTE_DIR }}
+      DEPLOY_MODE: ${{ inputs.mode || 'changed' }}
+      DEPLOY_BASE: ${{ github.event.before }}
+      DEPLOY_UPLOAD_LIST: /tmp/deploy-upload.txt
+      DEPLOY_DELETE_LIST: /tmp/deploy-delete.txt
+      DEPLOY_SFTP_BATCH: /tmp/deploy.sftp
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Validate deployment settings
+        shell: bash
+        run: |
+          test -n "$SFTP_HOST" || { echo "Missing secret: SFTP_HOST"; exit 1; }
+          test -n "$SFTP_USERNAME" || { echo "Missing secret: SFTP_USERNAME"; exit 1; }
+          test -n "$SFTP_PASSWORD" || { echo "Missing secret: SFTP_PASSWORD"; exit 1; }
+          test -n "$SFTP_REMOTE_DIR" || { echo "Missing variable: SFTP_REMOTE_DIR"; exit 1; }
+          [[ "$SFTP_PORT" =~ ^[0-9]+$ ]] || { echo "Invalid SFTP_PORT"; exit 1; }
+          [[ "$SFTP_REMOTE_DIR" == /* && "${SFTP_REMOTE_DIR//\//}" != "" ]] || {
+            echo "SFTP_REMOTE_DIR must be an absolute website directory, not the server root."
+            exit 1
+          }
+          [[ "$SFTP_REMOTE_DIR" != *'"'* && "$SFTP_REMOTE_DIR" != *$'\n'* && "$SFTP_REMOTE_DIR" != *$'\r'* ]] || {
+            echo "SFTP_REMOTE_DIR contains unsupported characters."
+            exit 1
+          }
+
+      - name: Prepare deployment plan
+        id: plan
+        shell: bash
+        run: |
+          : > "$DEPLOY_UPLOAD_LIST"
+          : > "$DEPLOY_DELETE_LIST"
+
+          base_commit="$DEPLOY_BASE"
+          if [[ -z "$base_commit" ]]; then
+            base_commit=$(git rev-parse HEAD^ 2>/dev/null || true)
+          fi
+          if [[ "$DEPLOY_MODE" == "full" ]] || ! git cat-file -e "${base_commit}^{commit}" 2>/dev/null; then
+            {
+              echo "mode=full"
+              echo "has_changes=true"
+            } >> "$GITHUB_OUTPUT"
+            echo "Full sync requested or no usable base commit found."
+            exit 0
+          fi
+
+          is_excluded() {
+            local pattern
+            while IFS= read -r pattern || [[ -n "$pattern" ]]; do
+              pattern="${pattern%$'\r'}"
+              case "$pattern" in ""|\#*) continue ;; esac
+              [[ "$1" == $pattern ]] && return 0
+            done < .ftpignore
+            return 1
+          }
+
+          while IFS=$'\t' read -r status path_a path_b; do
+            [[ -z "$status" ]] && continue
+            case "$status" in
+              A|M|T)
+                if ! is_excluded "$path_a" && [[ -f "$path_a" ]]; then
+                  echo "$path_a" >> "$DEPLOY_UPLOAD_LIST"
+                fi
+                ;;
+              D)
+                if ! is_excluded "$path_a"; then
+                  echo "$path_a" >> "$DEPLOY_DELETE_LIST"
+                fi
+                ;;
+              R*)
+                if ! is_excluded "$path_a"; then
+                  echo "$path_a" >> "$DEPLOY_DELETE_LIST"
+                fi
+                if ! is_excluded "$path_b" && [[ -f "$path_b" ]]; then
+                  echo "$path_b" >> "$DEPLOY_UPLOAD_LIST"
+                fi
+                ;;
+              C*)
+                if ! is_excluded "$path_b" && [[ -f "$path_b" ]]; then
+                  echo "$path_b" >> "$DEPLOY_UPLOAD_LIST"
+                fi
+                ;;
+            esac
+          done < <(git -c core.quotepath=false diff --name-status -M "$base_commit" "$GITHUB_SHA")
+
+          upload_count=$(grep -c . "$DEPLOY_UPLOAD_LIST" || true)
+          delete_count=$(grep -c . "$DEPLOY_DELETE_LIST" || true)
+          has_changes=false
+          if [[ "$upload_count" -gt 0 || "$delete_count" -gt 0 ]]; then
+            has_changes=true
+          fi
+          {
+            echo "mode=changed"
+            echo "has_changes=$has_changes"
+          } >> "$GITHUB_OUTPUT"
+          echo "Deployable uploads: $upload_count"
+          echo "Deployable deletes: $delete_count"
+
+      - name: Install deploy tools
+        if: steps.plan.outputs.has_changes == 'true'
+        shell: bash
+        run: |
+          tools=()
+          if [[ "${{ steps.plan.outputs.mode }}" == "full" ]]; then
+            command -v lftp >/dev/null 2>&1 || tools+=(lftp)
+          else
+            command -v sshpass >/dev/null 2>&1 || tools+=(sshpass)
+          fi
+          if [[ "${#tools[@]}" -gt 0 ]]; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends "${tools[@]}"
+          fi
+
+      - name: Trust SFTP host key
+        if: steps.plan.outputs.has_changes == 'true'
+        shell: bash
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "$SFTP_PORT" "$SFTP_HOST" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload changed website files
+        if: steps.plan.outputs.mode == 'changed' && steps.plan.outputs.has_changes == 'true'
+        shell: bash
+        env:
+          SSHPASS: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          remote_root="${SFTP_REMOTE_DIR%/}"
+          : > "$DEPLOY_SFTP_BATCH"
+          add_remote_dirs() {
+            local relative_dir="$1"
+            local current="$remote_root"
+            local part
+            local -a parts
+            [[ -z "$relative_dir" || "$relative_dir" == "." ]] && return
+            IFS='/' read -ra parts <<< "$relative_dir"
+            for part in "${parts[@]}"; do
+              [[ -z "$part" ]] && continue
+              current="$current/$part"
+              printf -- '-mkdir "%s"\n' "$current" >> "$DEPLOY_SFTP_BATCH"
+            done
+          }
+          while IFS= read -r file; do
+            [[ -z "$file" ]] && continue
+            printf -- '-rm "%s/%s"\n' "$remote_root" "$file" >> "$DEPLOY_SFTP_BATCH"
+          done < "$DEPLOY_DELETE_LIST"
+          while IFS= read -r file; do
+            [[ -z "$file" ]] && continue
+            add_remote_dirs "$(dirname "$file")"
+            printf 'put "%s" "%s/%s"\n' "$file" "$remote_root" "$file" >> "$DEPLOY_SFTP_BATCH"
+          done < "$DEPLOY_UPLOAD_LIST"
+          sshpass -e sftp -b "$DEPLOY_SFTP_BATCH" -P "$SFTP_PORT" \
+            -o BatchMode=no -o StrictHostKeyChecking=yes "$SFTP_USERNAME@$SFTP_HOST"
+
+      - name: Full sync website files
+        if: steps.plan.outputs.mode == 'full' && steps.plan.outputs.has_changes == 'true'
+        shell: bash
+        env:
+          LFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          remote_root="${SFTP_REMOTE_DIR%/}"
+          exclusions=""
+          while IFS= read -r pattern || [[ -n "$pattern" ]]; do
+            pattern="${pattern%$'\r'}"
+            case "$pattern" in ""|\#*) continue ;; esac
+            exclusions+=" --exclude-glob \"$pattern\""
+            if [[ "$pattern" == */'**' ]]; then
+              exclusions+=" --exclude-glob \"${pattern%\*\*}\""
+            fi
+          done < .ftpignore
+          {
+            echo "set cmd:fail-exit yes"
+            echo "set net:max-retries 2"
+            echo "set net:timeout 30"
+            echo "set sftp:auto-confirm no"
+            printf 'mirror --reverse --verbose --only-newer --no-perms --parallel=4%s ./ "%s"\n' "$exclusions" "$remote_root"
+            for directory in disco disco_photos disco_photos_small; do
+              printf 'mirror --reverse --delete --verbose --only-newer --no-perms --parallel=4%s "%s/" "%s/%s/"\n' \
+                "$exclusions" "$directory" "$remote_root" "$directory"
+            done
+            echo "bye"
+          } > "$DEPLOY_SFTP_BATCH"
+          lftp --env-password -u "$SFTP_USERNAME" -p "$SFTP_PORT" \
+            -e "source $DEPLOY_SFTP_BATCH" "sftp://$SFTP_HOST"
