@@ -2,7 +2,7 @@
 <br>
 <br>
 
-&copy; <a href="https://fuzzpop.no">Fuzz Pop</a>. Some rights reserved. 
+&copy; <a href="https://fuzzpop.no">Fuzz Pop</a>. All rights reserved. 
 
 <br>
 <br>
