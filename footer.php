@@ -8,7 +8,7 @@
 <br>
 
 <div class="images">
-<a href="https://fuzzpop.no" class="footer-logo">
+<a href="https://fuzzpop.no" class="footer-logo" title="Fuzz Pop">
 <img src="img/fuzz_pop.svg" alt="Fuzz Pop" style="height: 60px;">
 </a>
 </div>
@@ -24,7 +24,7 @@ Produced at <a href="https://focusstudios.no">Focus Studios</a>.
 <br>
 
 <div class="images">
-<a href="https://focusstudios.no" class="footer-logo">
+<a href="https://focusstudios.no" class="footer-logo" title="Focus Studios">
 <img src="img/focus_studios.svg" alt="Focus Studios" style="height: 60px;">
 </a>
 </div>
@@ -34,12 +34,12 @@ Produced at <a href="https://focusstudios.no">Focus Studios</a>.
 <br>
 
 <div class="image-container">
-  <a href="https://facebook.com/fuzzpop">
-  <img src="img/facebook.png" alt="Facebook" title="Facebook" style="height: 30px;">
+  <a href="https://facebook.com/fuzzpop" title="Facebook">
+  <img src="img/facebook.png" alt="Facebook" style="height: 30px;">
   </a>
   
-  <a href="https://youtube.com/@fuzzpop7785">
-  <img src="img/youtube.png" alt="YouTube" title="YouTube" style="height: 30px;">
+  <a href="https://youtube.com/@fuzzpop7785" title="YouTube">
+  <img src="img/youtube.png" alt="YouTube" style="height: 30px;">
   </a>
 </div>
   
