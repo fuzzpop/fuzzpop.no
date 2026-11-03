@@ -24,13 +24,19 @@ A {
   color: #0080FF;
 }
 
-A:not(:has(img)):HOVER {
+A:not(:has(img, svg)):HOVER {
   color: #000;
   background: #FF00FF;
 }
 
 A:visited {
 color: #FF00FF;
+}
+
+a:hover .icons,
+button:hover .icons,
+.image-container a:hover img {
+  opacity: 0.8;
 }
 
 .tight {
