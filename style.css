@@ -35,7 +35,8 @@ color: #FF00FF;
 
 a:hover .icons,
 button:hover .icons,
-.image-container a:hover img {
+.image-container a:hover img,
+a.footer-logo:hover img {
   opacity: 0.8;
 }
 

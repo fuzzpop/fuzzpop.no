@@ -8,7 +8,7 @@
 <br>
 
 <div class="images">
-<a href="https://fuzzpop.no">
+<a href="https://fuzzpop.no" class="footer-logo">
 <img src="img/fuzz_pop.svg" alt="Fuzz Pop" style="height: 60px;">
 </a>
 </div>
@@ -24,7 +24,7 @@ Produced at <a href="https://focusstudios.no">Focus Studios</a>.
 <br>
 
 <div class="images">
-<a href="https://focusstudios.no">
+<a href="https://focusstudios.no" class="footer-logo">
 <img src="img/focus_studios.svg" alt="Focus Studios" style="height: 60px;">
 </a>
 </div>
