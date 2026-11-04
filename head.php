@@ -1,6 +1,6 @@
 <title>Fuzz Pop</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="icon" href="favicon.png" type="image/x-icon">
+<link rel="icon" href="/favicon.svg?v=<?php echo filemtime(__DIR__ . '/favicon.svg'); ?>" type="image/svg+xml">
 <link rel="stylesheet" type="text/css" href="style.css">
 <meta property="og:image" content="img/logo.png">
 <meta name="keywords" content="Fuzz Pop, record label, record labels">
