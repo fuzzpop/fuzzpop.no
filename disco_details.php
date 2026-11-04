@@ -36,7 +36,16 @@
   }
 
   /* Adjustments for smaller screens */
-  @media (max-width: 768px) {
+  @media (max-width: 799px) {
+    .standard:has(> .list-item) {
+      padding: 0;
+    }
+
+    .list-item > a {
+      display: block;
+      width: 100%;
+    }
+
     .list-item {
       flex-direction: column; /* Stack content vertically on smaller screens */
       align-items: center; /* Center align items horizontally on smaller screens */
@@ -44,6 +53,7 @@
     }
 
     .list-item img {
+      display: block;
       margin: auto; /* Remove image margin on smaller screens */
       margin-bottom: 10px; /* Add space below image on smaller screens */
       width: 100%;

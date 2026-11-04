@@ -10,6 +10,9 @@ and images. Server error logs and certificate-validation files are excluded.
 
 This import preserves the existing website rather than changing its behavior.
 
+On phones, release front covers fill the page width in Grid, Details and
+individual release pages. Desktop thumbnails and layouts remain unchanged.
+
 ## Deployment
 
 The [Deploy site workflow](.github/workflows/deploy.yml) uses SFTP to deploy

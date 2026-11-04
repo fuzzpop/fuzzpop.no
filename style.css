@@ -120,6 +120,27 @@ a.footer-logo:hover img {
   overflow: hidden; /* Hide overflowing content to maintain uniformity */
 }
 
+.release-thumbnail {
+  height: 100px;
+  width: 100px;
+}
+
+@media (max-width: 799px) {
+  .full {
+    width: 100%;
+  }
+
+  .grid-container.release-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .release-thumbnail {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+}
+
 @media (min-width: 768px) {
   .grid-container {
     grid-template-columns: repeat(8, 1fr); /* photos per row on desktop */

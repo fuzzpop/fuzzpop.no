@@ -23,7 +23,7 @@
 
 <br>
 
-<div class="grid-container" id="gridContainer">
+<div class="grid-container release-grid" id="gridContainer">
 	
 <?php
 $discoFiles = glob('disco/*.txt'); // Get text files from folder
@@ -49,7 +49,7 @@ foreach ($discoFiles as $index => $txtFile) {
     echo sprintf(
         '<div class="grid-item">
             <a href="%s">
-                <img src="%s" alt="%s" title="%s" style="width: 100px; height: 100px;">
+                <img src="%s" alt="%s" title="%s" class="release-thumbnail">
             </a>
         </div>',
         $discoUrl,
