@@ -1,5 +1,9 @@
 # Fuzz Pop
 
+Public release pages use `/disco`, `/disco_grid`, `/disco_table` and
+`/disco_details`. `.htaccess` permanently redirects old PHP URLs, preserving
+query strings. PHP includes are not extensionless public routes.
+
 Source repository for the record label website at <https://fuzzpop.no>.
 
 ## Import baseline

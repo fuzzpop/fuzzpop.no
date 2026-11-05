@@ -30,7 +30,7 @@ $discoFiles = glob('disco/*.txt'); // Get text files from folder
 
 foreach ($discoFiles as $index => $txtFile) {
     $discoName = basename($txtFile, '.txt');
-    $discoUrl = 'disco.php?a=' . urlencode($discoName);
+    $discoUrl = 'disco?a=' . urlencode($discoName);
     
     $imgUrl = 'disco_photos_small/' . $discoName . '.png';
     if (!file_exists($imgUrl)) {

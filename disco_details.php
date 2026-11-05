@@ -71,7 +71,7 @@
 
   foreach ($discoFiles as $index => $txtFile) {
     $discoName = basename($txtFile, '.txt');
-    $discoUrl = 'disco.php?a=' . urlencode($discoName);
+    $discoUrl = 'disco?a=' . urlencode($discoName);
 
     // Read lines from the text file
     $fileContents = file($txtFile);

@@ -11,11 +11,11 @@
 
 <h1 class="heading">RELEASES 
 
-<a href="disco_table.php">
+<a href="disco_table">
 <img src="img/view_table.png" title="Table" style='height: 30px; width: 30px;'>
 </a>
 
-<a href="disco_grid.php">
+<a href="disco_grid">
 <img src="img/view_grid.png" title="Grid" style='height: 30px; width: 30px;'>
 </a>
 
@@ -82,11 +82,11 @@ $disco = glob('disco/*.txt');
     // Output some stuff
     echo "<td style='text-align: right;'>" . ($i + 1) . "</td>"; // index
     if (file_exists('disco_photos_small/' . $basename . '.png')) {
-    echo "<td class='notwrap tight' title='" . trim($contents[0]) . "'><a href='/disco.php?a=$basename'><img src='/disco_photos_small/$basename.png' alt='release'></a></td>";
+    echo "<td class='notwrap tight' title='" . trim($contents[0]) . "'><a href='/disco?a=$basename'><img src='/disco_photos_small/$basename.png' alt='release'></a></td>";
     } else {
     echo "<td><img src='no_photo_disco_50.png'></td>"; // photo
     }
-    echo "<td class='notwrap' style='text-align: left;' title='" . trim($contents[0]) . "'><a href='/disco.php?a=$basename'>" . trim($contents[0]) . "</a></td>"; // disco
+    echo "<td class='notwrap' style='text-align: left;' title='" . trim($contents[0]) . "'><a href='/disco?a=$basename'>" . trim($contents[0]) . "</a></td>"; // disco
     echo "<td class='notwrap' style='text-align: left;' title='" . trim($contents[1]) . "'>" . trim($contents[2]) . "</td>"; // title
     echo "<td class='notwrap' style='text-align: left;' title='" . trim($contents[3]) . "'>" . trim($contents[3]) . "</td>"; // cat
     echo "<td class='notwrap' style='text-align: left;' title='" . trim($contents[5]) . "'>" . implode(', ',$links) . "</td>"; // played with

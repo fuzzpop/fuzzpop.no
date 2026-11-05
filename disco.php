@@ -54,11 +54,11 @@ $prev_disco = basename($discos[$prev_index], '.txt');
 
 <div class="skip-buttons">
     <span id="skip-left-btn" class="skip-button">
-        <a href="<?php echo 'disco.php?a='.$prev_disco; ?>"><img src="img/prev.png" title="PREV"></a>
+        <a href="<?php echo 'disco?a='.$prev_disco; ?>"><img src="img/prev.png" title="PREV"></a>
     </span>
 
     <span id="skip-right-btn" class="skip-button">
-        <a href="<?php echo 'disco.php?a='.$next_disco; ?>"><img src="img/next.png" title="NEXT"></a>
+        <a href="<?php echo 'disco?a='.$next_disco; ?>"><img src="img/next.png" title="NEXT"></a>
     </span>
 </div>
 
