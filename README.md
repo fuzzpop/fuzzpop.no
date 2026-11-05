@@ -35,7 +35,7 @@ individual release pages. Desktop thumbnails and layouts remain unchanged.
 ## Deployment
 
 The [Deploy site workflow](.github/workflows/deploy.yml) uses SFTP to deploy
-website changes pushed to `main`, following the Pekosoft deployment approach.
+website changes pushed to `main`, using the shared all-site deployment flow.
 Repository-only changes do not trigger deployment. Both incremental uploads
 and full syncs use [.ftpignore](.ftpignore) to exclude development files,
 documentation, secrets, logs and server-managed certificate-validation files.
@@ -58,9 +58,11 @@ Configure these
 The workflow fails explicitly if required settings are missing. It learns the
 SFTP host key with `ssh-keyscan`, matching Pekosoft's existing setup.
 
-For the first deployment, open
+Before migration or the first deployment, open
 [Actions](https://github.com/fuzzpop/fuzzpop.no/actions/workflows/deploy.yml),
-select **Run workflow**, and choose **full**. A full sync uploads the website
+select **Run workflow**, and choose **check** to verify the SFTP login and
+destination without changing files. Choose **full** only after that check.
+A full sync uploads tracked runtime files
 and removes files absent from the repository inside `disco`, `disco_photos`
 and `disco_photos_small`, including withdrawn releases still on the host.
 It does not delete extra files elsewhere on the host, and exclusions remain
@@ -73,11 +75,17 @@ uploading or deleting files.
 
 Subsequent pushes and manual **changed** runs compare the latest commit with
 the last successful deployment on the same branch, recovering changes from failed
-runs. API errors or missing deployed ancestors stop deployment rather than
+runs. Successful **check** and **dry-run** runs are not upload baselines.
+API errors or missing deployed ancestors stop deployment rather than
 silently selecting a destructive full sync. Use **full** only after reviewing
 the destination and its documented deletion behavior.
 Deployments run one at a time. This workflow does not generate Pekosoft's
 updates feed, which Fuzz Pop does not use.
+
+Existing `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD` and `SERVER_DIR`
+secrets are accepted as compatibility aliases when SFTP settings are absent.
+They still use SFTP, not FTP or FTPS. Verify the destination in SFTP.
+Run `node --test .github/tests/deployment.cjs` for deployment regression tests.
 
 ## Local preview
 

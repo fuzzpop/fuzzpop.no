@@ -30,3 +30,17 @@ error_log.*
 .well-known/pki-validation/**
 .DS_Store
 Thumbs.db
+
+# Shared deployment exclusions
+**/*.md
+**/.env*
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/error_log*
+**/*.log
+**/*.bak
+**/*.tmp
+**/.DS_Store
+**/Thumbs.db
