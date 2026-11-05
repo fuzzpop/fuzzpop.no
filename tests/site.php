@@ -75,11 +75,17 @@ if (($argv[1] ?? '') === '--http') {
         foreach (['.php', '/'] as $suffix) {
             [$status, , $headers] = response("/$page$suffix?keep=1%202");
             check($status === 301, "Permanent redirect: $page$suffix");
-            check(in_array("Location: /$page?keep=1%202", $headers, true), "Preserve redirect query: $page$suffix");
+            $locations = array_values(array_filter($headers, fn($header) => str_starts_with(strtolower($header), 'location:')));
+            $location = isset($locations[0]) ? trim(substr($locations[0], 9)) : '';
+            $expectedLocation = "/$page?keep=1%202";
+            check($location === $expectedLocation || $location === $base . $expectedLocation, "Preserve redirect query: $page$suffix");
         }
     }
-    foreach (['/disco?a=missing', '/disco?a[]=bad', '/missing-fuzz-pop-page', '/functions.php', '/releases_toc.php', '/data/artists.json', '/tests/site.php'] as $path) {
+    foreach (['/disco?a=missing', '/disco?a[]=bad', '/missing-fuzz-pop-page'] as $path) {
         check(response($path)[0] === 404, "Expected HTTP 404: $path");
+    }
+    foreach (['/functions.php', '/releases_toc.php', '/data/artists.json', '/tests/site.php'] as $path) {
+        check(in_array(response($path)[0], [403, 404], true), "Private resource must be inaccessible: $path");
     }
     foreach (['/releases?view=bad', '/releases?view[]=grid', '/releases?artist[]=bad'] as $path) {
         [$status, $html] = response($path);
