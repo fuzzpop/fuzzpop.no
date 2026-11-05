@@ -227,7 +227,8 @@ jobs:
               [[ -z "$file" ]] && continue
               directory="$(dirname "$file")"
               if [[ "$directory" != "." ]]; then
-                printf 'mkdir -p "%s/%s"\n' "$remote_root" "$directory"
+                printf 'cls -d "%s/%s" >/dev/null || mkdir -p "%s/%s"\n' \
+                  "$remote_root" "$directory" "$remote_root" "$directory"
               fi
               printf 'put "%s" -o "%s/%s"\n' "$file" "$remote_root" "$file"
             done < "$DEPLOY_UPLOAD_LIST"
