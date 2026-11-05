@@ -57,4 +57,7 @@ jobs:
         run: |
           echo "OpenSSH: $OPENSSH_RESULT"
           echo "lftp: $LFTP_RESULT"
-          test "$OPENSSH_RESULT" = success && test "$LFTP_RESULT" = success
+          if [[ "$OPENSSH_RESULT" != success ]]; then
+            echo "::warning::OpenSSH login failed. Deployment uses lftp."
+          fi
+          test "$LFTP_RESULT" = success

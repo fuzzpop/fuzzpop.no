@@ -66,9 +66,16 @@ and `disco_photos_small`, including withdrawn releases still on the host.
 It does not delete extra files elsewhere on the host, and exclusions remain
 protected. Review the destination before starting a full sync.
 
-Subsequent pushes deploy all website additions, changes, renames and deletions
-in that push. Manual **changed** runs compare the latest commit with its parent;
-use **full** to recover from a failed deployment or reconcile the entire site.
+Both incremental and full uploads use lftp over SFTP. OpenSSH's batch client
+rejects authentication on this account while lftp connects with the same secrets.
+The read-only **Test deployment connection** workflow checks both clients without
+uploading or deleting files.
+
+Subsequent pushes and manual **changed** runs compare the latest commit with
+the last successful deployment on the same branch, recovering changes from failed
+runs. API errors or missing deployed ancestors stop deployment rather than
+silently selecting a destructive full sync. Use **full** only after reviewing
+the destination and its documented deletion behavior.
 Deployments run one at a time. This workflow does not generate Pekosoft's
 updates feed, which Fuzz Pop does not use.
 
