@@ -1,8 +1,23 @@
 # Fuzz Pop
 
-Public release pages use `/disco`, `/disco_grid`, `/disco_table` and
-`/disco_details`. `.htaccess` permanently redirects old PHP URLs, preserving
-query strings. PHP includes are not extensionless public routes.
+The main navigation is **Home**, **Releases**, **Artists**, **About**, using `/`,
+`/releases`, `/artists` and `/about`. The fixed header and responsive TOC and
+Settings sidebars follow the sibling sites. Desktop sidebars open by default
+and remember their state; phone menus open one at a time. Settings provides
+Dark mode, Fullscreen, Share and Reset. Original bitmap colors are preserved
+in Light mode.
+
+Releases supports `?view=grid` (default), `?view=details` and `?view=table`,
+plus `?artist=NAME`. The existing `/disco?a=SLUG`, `/disco_grid`,
+`/disco_table` and `/disco_details` links remain supported. `.htaccess`
+permanently redirects old PHP URLs, preserving query strings. Missing releases
+return HTTP 404 and invalid view parameters return HTTP 400. PHP includes are
+not extensionless public routes.
+
+Artist records live in `data/artists.json`. Existing release and tracklist
+text files remain authoritative and are read by `functions.php`; the public
+release pages share that reader. Label registration and address information
+from the original homepage now appear on About.
 
 Source repository for the record label website at <https://fuzzpop.no>.
 
@@ -70,12 +85,19 @@ See the shared [site register](../SITES.md) for all eight previews, routing
 validation, browser groups, and icon synchronization. Localhost remains on HTTP;
 production HTTPS redirects remain an Apache setting.
 
+## Validation
+
+With shared previews running:
+
+```powershell
+php -n tests/site.php --http http://localhost:8004
+```
+
+Check desktop and phone layouts in the browser, including both desktop
+sidebars open, mobile menu switching, theme persistence and full-width covers.
+
 ## Known baseline issues
 
-- Some release metadata omits the Spotify URL line. Existing direct array access
-  can emit PHP 8 warnings, including in `disco_details.php` and `disco.php`.
-- The legacy `disco_table.php` references an undefined `$map` when constructing
-  artist links and emits PHP warnings.
 - The existing `disco_test.php` contains a syntax error and does not pass PHP
   linting. It is retained as part of the original import, not as a passing test.
 
