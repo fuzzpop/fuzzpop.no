@@ -59,15 +59,16 @@ updates feed, which Fuzz Pop does not use.
 
 ## Local preview
 
-From the repository directory, run:
+Use the shared Caddy/PHP startup command from this site's directory:
 
 ```powershell
-php -S localhost:8001 -t .
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "..\local-tools\startup.ps1"
 ```
 
-Open <http://localhost:8001>. Use a different available port if necessary.
-PHP's development server does not apply `.htaccess`; the production HTTPS
-redirect remains an Apache setting.
+Open <http://localhost:8004>. Port 8001 belongs to MC Peko.
+See the shared [site register](../SITES.md) for all eight previews, routing
+validation, browser groups, and icon synchronization. Localhost remains on HTTP;
+production HTTPS redirects remain an Apache setting.
 
 ## Known baseline issues
 

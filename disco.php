@@ -86,7 +86,7 @@ if (!empty($title)) {
 
     <?php
 
-$spotify = trim($contents[9]);
+$spotify = trim($contents[9] ?? '');
 
 if (file_exists('disco_photos/' . $disco . '.png')) {
     $imageTag = "<img src='disco_photos/$disco.png' title='" . trim($contents[3]) . "' style='width: 1018px;' class='full'>";

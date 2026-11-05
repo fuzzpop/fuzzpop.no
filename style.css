@@ -26,7 +26,7 @@ A {
 
 A:not(:has(img, svg)):HOVER {
   color: #000;
-  background: #FF00FF;
+  background: #FFF;
 }
 
 A:visited {
