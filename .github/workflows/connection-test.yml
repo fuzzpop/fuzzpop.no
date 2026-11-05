@@ -1,0 +1,56 @@
+name: Test deployment connection
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  connection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SFTP_HOST: ${{ secrets.SFTP_HOST }}
+      SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
+      SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+      SFTP_PORT: ${{ vars.SFTP_PORT || '22' }}
+    steps:
+      - name: Install connection clients
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends sshpass lftp
+      - name: Validate connection settings
+        run: |
+          test -n "$SFTP_HOST" || { echo "Missing SFTP_HOST"; exit 1; }
+          test -n "$SFTP_USERNAME" || { echo "Missing SFTP_USERNAME"; exit 1; }
+          test -n "$SFTP_PASSWORD" || { echo "Missing SFTP_PASSWORD"; exit 1; }
+          [[ "$SFTP_PORT" =~ ^[0-9]+$ ]] || { echo "Invalid SFTP_PORT"; exit 1; }
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "$SFTP_PORT" "$SFTP_HOST" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+      - name: Test OpenSSH login without uploads
+        id: openssh
+        continue-on-error: true
+        env:
+          SSHPASS: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          printf 'pwd\nquit\n' > /tmp/connection.sftp
+          timeout 45 sshpass -e sftp -b /tmp/connection.sftp -P "$SFTP_PORT" \
+            -o BatchMode=no -o StrictHostKeyChecking=yes "$SFTP_USERNAME@$SFTP_HOST"
+      - name: Test lftp login without uploads
+        id: lftp
+        continue-on-error: true
+        env:
+          LFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          timeout 45 lftp --env-password -u "$SFTP_USERNAME" -p "$SFTP_PORT" \
+            -e 'set cmd:fail-exit yes; set net:max-retries 1; set net:timeout 15; set sftp:auto-confirm no; cls -d . >/dev/null; bye' \
+            "sftp://$SFTP_HOST"
+      - name: Report connection results
+        if: always()
+        env:
+          OPENSSH_RESULT: ${{ steps.openssh.outcome }}
+          LFTP_RESULT: ${{ steps.lftp.outcome }}
+        run: |
+          echo "OpenSSH: $OPENSSH_RESULT"
+          echo "lftp: $LFTP_RESULT"
+          test "$OPENSSH_RESULT" = success && test "$LFTP_RESULT" = success
