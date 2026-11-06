@@ -51,9 +51,10 @@ Before the first deployment, configure these
 Configure these
 [GitHub Actions variables](https://github.com/fuzzpop/fuzzpop.no/settings/variables/actions):
 
-- `SFTP_REMOTE_DIR`: the absolute Fuzz Pop document root on Host1. Verify this
-  against the hosting configuration; do not use the Pekosoft directory.
 - `SFTP_PORT`: optional; defaults to `22`.
+
+The workflow defines `SFTP_REMOTE_DIR` as `/home/flamenco/fuzzpop.no`.
+The old destination variable and `SERVER_DIR` secret are not used.
 
 The workflow fails explicitly if required settings are missing. It learns the
 SFTP host key with `ssh-keyscan`, matching Pekosoft's existing setup.
@@ -82,7 +83,7 @@ the destination and its documented deletion behavior.
 Deployments run one at a time. This workflow does not generate Pekosoft's
 updates feed, which Fuzz Pop does not use.
 
-Existing `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD` and `SERVER_DIR`
+Existing `FTP_SERVER`, `FTP_USERNAME` and `FTP_PASSWORD`
 secrets are accepted as compatibility aliases when SFTP settings are absent.
 They still use SFTP, not FTP or FTPS. Verify the destination in SFTP.
 Run `node --test .github/tests/deployment.cjs` for deployment regression tests.
