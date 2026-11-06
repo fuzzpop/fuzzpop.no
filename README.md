@@ -1,8 +1,9 @@
 # Fuzz Pop
 
 The main navigation is **Home**, **Releases**, **Artists**, **About**, using `/`,
-`/releases`, `/artists` and `/about`. The fixed header and responsive TOC and
-Settings sidebars follow the sibling sites. Desktop sidebars open by default
+`/releases`, `/artists` and `/about`. The fixed header uses the Fuzz Pop logo as
+its home link, and the responsive TOC and Settings sidebars follow the sibling
+sites. Desktop sidebars open by default
 and remember their state; phone menus open one at a time. Settings provides
 Dark mode, Fullscreen, Share and Reset. Original bitmap colors are preserved
 in Light mode.

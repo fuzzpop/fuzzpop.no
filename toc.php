@@ -26,7 +26,7 @@
     </nav>
   </div>
 
-  <div class="heading"><a href="/">Fuzz Pop</a></div>
+  <div class="heading"><a href="/"><img src="/img/fuzz_pop.svg?v=<?php echo filemtime(__DIR__ . '/img/fuzz_pop.svg'); ?>" alt="Fuzz Pop"></a></div>
 
   <div id="settings-menu-container">
     <button id="toggle-settings-panel-button" class="settings-toggle" type="button" title="Settings" aria-label="Settings" aria-controls="settings-panel" aria-expanded="false">
