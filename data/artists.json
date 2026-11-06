@@ -1,8 +1,13 @@
 [
   {
+    "name": "Arctica / Antarctica",
+    "url": "https://arcticaantarctica.com",
+    "image": "/img/arctica_antarctica.svg"
+  },
+  {
     "name": "Epileptic Passion",
     "url": null,
-    "image": null
+    "image": "/img/epileptic_passion.svg"
   },
   {
     "name": "MC Peko",
@@ -12,6 +17,6 @@
   {
     "name": "Silentlab",
     "url": "https://silentlab.net",
-    "image": "/img/silentlab.png"
+    "image": "/img/silentlab.svg"
   }
 ]

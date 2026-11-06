@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="768" viewBox="0 0 768 768">
+  <path fill="#fff" fill-rule="evenodd" d="M384 42a342 342 0 1 1 0 684a342 342 0 1 1 0-684ZM231 127Q384 212 541 127a299 299 0 0 1 0 514Q384 556 231 641a299 299 0 0 1 0-514Z"/>
+  <g fill="#fff" font-family="Arial, Helvetica, sans-serif">
+    <text x="384" y="535" text-anchor="middle" font-size="40" letter-spacing="1" transform="rotate(180 384 384)">ARCTICA / ANTARCTICA</text>
+    <text x="384" y="535" text-anchor="middle" font-size="40" letter-spacing="1">ARCTICA / ANTARCTICA</text>
+    <path fill-rule="evenodd" d="M141 279h47l18 48h84l17-48h44l-80 210h-46Zm78 81h60l-31 79Z"/>
+    <path d="m325 489 69-213h44l-82 213z"/>
+    <path fill-rule="evenodd" d="m410 489 81-210h47l84 210h-47l-17-48h-84l-17 48Zm77-83h56l-28-77Z"/>
+  </g>
+</svg>

@@ -19,9 +19,18 @@ foreach ($releases as $release) {
     }
 }
 $artists = loadArtists();
-check(array_column($artists, 'name') === ['Epileptic Passion', 'MC Peko', 'Silentlab'], 'Retain the verified artists');
+check(array_column($artists, 'name') === ['Arctica / Antarctica', 'Epileptic Passion', 'MC Peko', 'Silentlab'], 'Retain the verified artists');
+check($artists[0]['url'] === 'https://arcticaantarctica.com' && $artists[0]['image'] === '/img/arctica_antarctica.svg', 'Use the A/A website and vector logo');
+check($artists[1]['image'] === '/img/epileptic_passion.svg' && $artists[1]['url'] === null, 'Epileptic Passion logo has no invented website');
+check($artists[2]['image'] === '/img/mc_peko.svg' && $artists[2]['url'] === 'https://peko.net', 'Use the MC Peko vector logo and website');
+check($artists[3]['image'] === '/img/silentlab.svg' && $artists[3]['url'] === 'https://silentlab.net', 'Use the white Silentlab logo');
 foreach ($artists as $artist) {
-    check(in_array($artist['name'], array_column($releases, 'artist'), true), 'Every artist must have an existing release');
+    if ($artist['image'] !== null) {
+        check(is_file(__DIR__ . '/..' . $artist['image']), "Missing artist logo: {$artist['name']}");
+    }
+}
+foreach ($releases as $release) {
+    check(in_array($release['artist'], array_column($artists, 'name'), true), 'Every release must have an artist record');
 }
 check($releases['meant_to_be_shared']['description'] === '5" jewel case', 'Retain packaging');
 check($releases['meant_to_be_shared']['spotify'] === '', 'Missing optional Spotify field must remain empty');
@@ -71,6 +80,24 @@ if (($argv[1] ?? '') === '--http') {
         [, $html] = response('/releases?artist=' . rawurlencode($artist['name']));
         check(substr_count($html, '<article class="release-card') === count(array_filter($releases, fn($release) => $release['artist'] === $artist['name'])), 'Artist filter mismatch');
     }
+    [, $artistsPage] = response('/artists');
+    check(!preg_match('~<h2\b~', $artistsPage), 'Do not render artist names as text headings');
+    check((bool) preg_match('~<a class="artist-logo"[^>]*href="https://arcticaantarctica\.com"[^>]*><img src="/img/arctica_antarctica\.svg\?v=\d+" alt="Arctica / Antarctica">~', $artistsPage), 'Link the A/A vector logo to its website');
+    check(!str_contains($artistsPage, '<a href="/releases?artist=Arctica%20%2F%20Antarctica">Releases</a>'), 'Do not show an empty A/A releases link');
+    [$status, $logo] = response('/img/arctica_antarctica.svg');
+    check($status === 200 && str_contains($logo, '<svg ') && str_contains($logo, 'fill="#fff"') && !str_contains($logo, '<image') && !str_contains($logo, 'gradient'), 'Serve the white transparent A/A vector logo');
+    check(str_contains($logo, 'a342 342 0 1 1 0 684') && str_contains($logo, 'M231 127Q384 212 541 127'), 'Fill the logo ring and both polar regions');
+    check(str_contains($logo, 'rotate(180 384 384)') && str_contains($logo, 'M141 279h47l18 48h84l17-48h44'), 'Invert the first A and upper wordmark');
+    check((bool) preg_match('~<a class="artist-logo"[^>]*href="https://peko\.net"[^>]*><img src="/img/mc_peko\.svg\?v=\d+" alt="MC Peko">~', $artistsPage), 'Render the linked MC Peko vector logo');
+    check((bool) preg_match('~<a class="artist-logo"[^>]*href="https://silentlab\.net"[^>]*><img src="/img/silentlab\.svg\?v=\d+" alt="Silentlab">~', $artistsPage), 'Link the Silentlab logo to its website');
+    [$status, $logo] = response('/img/mc_peko.svg');
+    check($status === 200 && str_contains($logo, 'viewBox="0 0 637.9865 120.2752"') && str_contains($logo, 'fill: #fff'), 'Serve the supplied MC Peko landscape SVG');
+    check((bool) preg_match('~<div class="artist-logo"><img src="/img/epileptic_passion\.svg\?v=\d+" alt=""></div>~', $artistsPage), 'Render the Epileptic Passion logo without a link');
+    check((bool) preg_match('~<a class="artist-logo"[^>]*><img src="/img/silentlab\.svg\?v=\d+" alt="Silentlab">~', $artistsPage), 'Render the white Silentlab logo');
+    [$status, $logo] = response('/img/epileptic_passion.svg');
+    check($status === 200 && str_contains($logo, '<svg ') && str_contains($logo, 'fill="#fff"'), 'Serve the white Epileptic Passion SVG');
+    [$status, $logo] = response('/img/silentlab.svg');
+    check($status === 200 && str_contains($logo, '<path fill="#fff"') && str_contains($logo, 'fill-rule="evenodd"') && !str_contains($logo, 'data:image/'), 'Serve the vector white Silentlab SVG');
     foreach (['releases', 'artists', 'about', 'disco', 'disco_grid', 'disco_table', 'disco_details'] as $page) {
         foreach (['.php', '/'] as $suffix) {
             [$status, , $headers] = response("/$page$suffix?keep=1%202");

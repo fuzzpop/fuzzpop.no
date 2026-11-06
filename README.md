@@ -14,10 +14,17 @@ permanently redirects old PHP URLs, preserving query strings. Missing releases
 return HTTP 404 and invalid view parameters return HTTP 400. PHP includes are
 not extensionless public routes.
 
-Artist records live in `data/artists.json`. Existing release and tracklist
-text files remain authoritative and are read by `functions.php`; the public
-release pages share that reader. Label registration and address information
-from the original homepage now appear on About.
+Artist records live in `data/artists.json`. Artists can be listed before they
+have a Fuzz Pop release. Artist logos link to their website when one is known.
+Existing release and tracklist text files remain authoritative and are read by
+`functions.php`; the public release pages share that reader. Label registration
+and address information from the original homepage now appear on About.
+The Epileptic Passion logo uses outlined Edwardian Script ITC lettering,
+matching the Meant To Be Shared cover. It is not linked because the artist
+record has no verified website. The Silentlab Artists logo uses an SVG path
+wordmark traced from the original artwork.
+Arctica / Antarctica has an interim white-only SVG based on the provided logo.
+Replace it with the original vector artwork when available.
 
 Source repository for the record label website at <https://fuzzpop.no>.
 
