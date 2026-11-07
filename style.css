@@ -141,24 +141,26 @@ footer { margin: 20px auto 0; padding: 8px 8px 32px; }
 .artist-links { align-items: center; display: flex; flex-direction: column; gap: 12px; }
 .artist-link { align-items: center; display: inline-flex; gap: 8px; }
 .release-card { min-width: 0; }
-.release-cover { display: block; margin: 0 auto; max-width: 100%; width: fit-content; }
+.release-cover { display: block; margin: 16px auto; max-width: 100%; width: fit-content; }
 .release-cover picture { display: block; }
 .release-cover img, .full { display: block; height: auto; margin: 0 auto; max-width: 100%; }
 .entry-text { overflow-wrap: anywhere; padding: 16px; }
 .entry-text p:last-child { margin-bottom: 0; }
 .release-details { grid-template-columns: minmax(0, 1fr); }
 .release-details .release-card { align-items: start; display: flex; gap: 16px; text-align: left; }
-.release-details .release-cover { flex: none; margin: 0; max-width: 40%; width: 240px; }
+.release-details .release-cover { flex: none; margin: 16px 0 16px 16px; max-width: 40%; width: 240px; }
 .release-details .release-cover img { width: 100%; }
 .release-details .entry-text { min-width: 0; }
 .release-page { margin: 16px auto; max-width: 1024px; }
+.release-page .full { margin: 16px auto; max-width: calc(100% - 32px); }
 dl { margin: 16px 0; }
 dl > div { margin: 8px 0; }
 dt, dd { display: inline; margin: 0; }
 dt::after { content: ": "; }
 .tracklist { list-style-position: inside; padding: 0; }
 .table-scroll { max-width: 100%; overflow-x: auto; }
-.release-table { border-collapse: collapse; text-align: left; width: 100%; }
+.release-table { border: 1px solid var(--grey1); border-collapse: collapse; text-align: left; width: 100%; }
+.release-table td, .release-table th { border: 1px solid var(--grey1); }
 .release-table td, .release-table th { padding: 8px; white-space: nowrap; }
 .release-table th { cursor: pointer; }
 .release-table tbody tr:hover { background: var(--grey1); }
@@ -189,5 +191,5 @@ dt::after { content: ": "; }
 @media (max-width: 799px) {
   .release-grid, .artist-grid { grid-template-columns: minmax(0, 1fr); }
   .release-details .release-card { display: block; }
-  .release-details .release-cover, .release-cover, .release-cover img, .release-page > .full { max-width: 100%; width: 100%; }
+  .release-cover, .release-details .release-cover, .release-cover img, .release-page .full { margin: 0; max-width: 100%; width: 100%; }
 }
