@@ -82,13 +82,13 @@ address { font-style: normal; }
   background: var(--grey1);
   bottom: 0;
   flex-direction: column;
-  height: calc(100dvh - 55px);
+  height: calc(100dvh - 48px);
   left: 0;
   overflow: hidden;
   position: fixed;
   right: 0;
   text-align: left;
-  top: 55px;
+  top: 48px;
   width: 100%;
   z-index: 999;
 }
@@ -177,7 +177,7 @@ dt::after { content: ": "; }
 
 @media (min-width: 800px) {
   :root { --sidebar-width: min(320px, 28vw); --site-frame-offset: max(0px, calc((100vw - var(--maxwidth)) / 2)); }
-  .toc-container, .settings-panel { bottom: auto; height: calc(100dvh - 87px); margin: 16px 0; top: 55px; width: var(--sidebar-width); }
+  .toc-container, .settings-panel { bottom: auto; height: calc(100dvh - 80px); margin: 16px 0; top: 48px; width: var(--sidebar-width); }
   .toc-container { left: var(--site-frame-offset); right: auto; }
   .settings-panel { left: auto; right: var(--site-frame-offset); }
   body {
