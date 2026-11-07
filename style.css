@@ -135,9 +135,11 @@ footer { margin: 20px auto 0; padding: 8px 8px 32px; }
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
   margin: 16px auto;
 }
-.artist-card { min-width: 0; padding: 16px; }
+.artist-card { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 16px; }
 .artist-logo { display: block; margin: 24px auto; max-width: 100%; width: fit-content; }
 .artist-logo img { display: block; height: auto; max-height: 160px; max-width: 100%; width: auto; }
+.artist-links { align-items: center; display: flex; flex-direction: column; gap: 12px; }
+.artist-link { align-items: center; display: inline-flex; gap: 8px; }
 .release-card { min-width: 0; }
 .release-cover { display: block; margin: 0 auto; max-width: 100%; width: fit-content; }
 .release-cover picture { display: block; }

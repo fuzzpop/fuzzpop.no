@@ -20,7 +20,7 @@ foreach ($releases as $release) {
 }
 $artists = loadArtists();
 check(array_column($artists, 'name') === ['Arctica / Antarctica', 'Epileptic Passion', 'MC Peko', 'Silentlab'], 'Retain the verified artists');
-check($artists[0]['url'] === 'https://arcticaantarctica.com' && $artists[0]['image'] === '/img/arctica_antarctica.svg', 'Use the A/A website and vector logo');
+check($artists[0]['url'] === 'https://arcticaantarctica.com' && $artists[0]['soundcloud'] === 'https://soundcloud.com/mc-peko/sets/arctica-antarctica' && $artists[0]['image'] === '/img/arctica_antarctica.svg', 'Use the A/A website, SoundCloud and vector logo');
 check($artists[1]['image'] === '/img/epileptic_passion.svg' && $artists[1]['url'] === null, 'Epileptic Passion logo has no invented website');
 check($artists[2]['image'] === '/img/mc_peko.svg' && $artists[2]['url'] === 'https://peko.net', 'Use the MC Peko vector logo and website');
 check($artists[3]['image'] === '/img/silentlab.svg' && $artists[3]['url'] === 'https://silentlab.net', 'Use the white Silentlab logo');
@@ -83,6 +83,7 @@ if (($argv[1] ?? '') === '--http') {
     [, $artistsPage] = response('/artists');
     check(!preg_match('~<h2\b~', $artistsPage), 'Do not render artist names as text headings');
     check((bool) preg_match('~<a class="artist-logo"[^>]*href="https://arcticaantarctica\.com"[^>]*><img src="/img/arctica_antarctica\.svg\?v=\d+" alt="Arctica / Antarctica">~', $artistsPage), 'Link the A/A vector logo to its website');
+    check((bool) preg_match('~<a class="artist-link" href="https://soundcloud\.com/mc-peko/sets/arctica-antarctica" title="SoundCloud"><svg class="icons" aria-hidden="true"><use href="/icons\.svg#soundcloud"></use></svg>SoundCloud</a>~', $artistsPage), 'Link A/A to its SoundCloud set');
     check(!str_contains($artistsPage, '<a href="/releases?artist=Arctica%20%2F%20Antarctica">Releases</a>'), 'Do not show an empty A/A releases link');
     [$status, $logo] = response('/img/arctica_antarctica.svg');
     check($status === 200 && str_contains($logo, '<svg ') && str_contains($logo, 'fill="#fff"') && !str_contains($logo, '<image') && !str_contains($logo, 'gradient'), 'Serve the white transparent A/A vector logo');

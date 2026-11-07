@@ -24,9 +24,14 @@ $pageTitle = 'Artists';
       <div class="artist-logo"><img src="<?php echo escapeHtml($logoUrl); ?>" alt=""></div>
       <?php endif; ?>
       <?php endif; ?>
-      <?php if (in_array($artist['name'], $releaseArtists, true)): ?>
-      <a href="/releases?artist=<?php echo rawurlencode($artist['name']); ?>">Releases</a>
-      <?php endif; ?>
+      <div class="artist-links">
+        <?php if (!empty($artist['soundcloud'])): ?>
+        <a class="artist-link" href="<?php echo escapeHtml($artist['soundcloud']); ?>" title="SoundCloud"><svg class="icons" aria-hidden="true"><use href="/icons.svg#soundcloud"></use></svg>SoundCloud</a>
+        <?php endif; ?>
+        <?php if (in_array($artist['name'], $releaseArtists, true)): ?>
+        <a href="/releases?artist=<?php echo rawurlencode($artist['name']); ?>">Releases</a>
+        <?php endif; ?>
+      </div>
     </article>
     <?php endforeach; ?>
   </div>

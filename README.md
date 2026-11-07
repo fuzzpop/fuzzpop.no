@@ -17,6 +17,7 @@ not extensionless public routes.
 
 Artist records live in `data/artists.json`. Artists can be listed before they
 have a Fuzz Pop release. Artist logos link to their website when one is known.
+Arctica / Antarctica also links to its SoundCloud set.
 Existing release and tracklist text files remain authoritative and are read by
 `functions.php`; the public release pages share that reader. Label registration
 and address information from the original homepage now appear on About.
