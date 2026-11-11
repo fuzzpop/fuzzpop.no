@@ -9,7 +9,13 @@ Dark mode, Fullscreen, Share and Reset. Original bitmap colors are preserved
 in Light mode.
 
 Releases supports `?view=grid` (default), `?view=details` and `?view=table`,
-plus `?artist=NAME`. The existing `/disco?a=SLUG`, `/disco_grid`,
+plus `?artist=NAME`.
+Table columns resize by dragging a header's right edge, using Pekosoft's
+column-sizing behavior. Double-click that edge (or double-tap on touch screens)
+to restore its initial width. Header clicks still sort; resize gestures do not.
+The table scrolls within the available content width, including with sidebars open.
+
+The existing `/disco?a=SLUG`, `/disco_grid`,
 `/disco_table` and `/disco_details` links remain supported. `.htaccess`
 permanently redirects old PHP URLs, preserving query strings. Missing releases
 return HTTP 404 and invalid view parameters return HTTP 400. PHP includes are

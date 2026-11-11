@@ -161,10 +161,15 @@ dt, dd { display: inline; margin: 0; }
 dt::after { content: ": "; }
 .tracklist { list-style-position: inside; padding: 0; }
 .table-scroll { max-width: 100%; overflow-x: auto; }
-.release-table { border: 1px solid var(--grey1); border-collapse: collapse; text-align: left; width: 100%; }
+.release-table { border: 1px solid var(--grey1); border-collapse: collapse; table-layout: fixed; text-align: left; width: 100%; }
 .release-table td, .release-table th { border: 1px solid var(--grey1); }
 .release-table td, .release-table th { padding: 8px; white-space: nowrap; }
 .release-table th { cursor: pointer; }
+.release-table.resizable-columns { max-width: none; min-width: 100%; }
+.release-table.resizable-columns td, .release-table.resizable-columns th { min-width: 0; overflow: hidden; }
+.release-table.resizable-columns th { touch-action: pan-y pinch-zoom; user-select: none; }
+.release-table.resizable-columns th.column-resize-target, .release-table.resizable-columns th.column-resizing { cursor: col-resize; }
+.release-table.resizable-columns th.column-resizing, .release-table.resizable-columns td.column-resizing { border-right: 1px solid var(--color1); }
 .release-table tbody tr:hover { background: var(--grey1); }
 .table-cover { display: block; height: 50px; width: auto; }
 .invert-colors body > :not(.top-heading),

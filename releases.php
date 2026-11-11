@@ -23,7 +23,10 @@ if ($releaseView === 'details') {
 <html lang="en">
 <head>
   <?php require __DIR__ . '/head.php'; ?>
-  <?php if ($releaseView === 'table'): ?><script src="/sort_table.js" defer></script><?php endif; ?>
+  <?php if ($releaseView === 'table'): ?>
+  <script src="/sort_table.js" defer></script>
+  <script src="/resize_table.js?v=<?php echo filemtime(__DIR__ . '/resize_table.js'); ?>" defer></script>
+  <?php endif; ?>
 </head>
 <body>
   <?php require __DIR__ . '/toc.php'; ?>
