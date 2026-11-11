@@ -12,6 +12,7 @@ function check(bool $condition, string $message): void
 }
 
 $releases = loadReleases();
+$style = file_get_contents(__DIR__ . '/../style.css');
 check(count($releases) === count(glob(__DIR__ . '/../disco/*.txt')), 'All original releases must be retained');
 foreach ($releases as $release) {
     foreach (['thumbnail', 'cover'] as $field) {
@@ -57,6 +58,18 @@ if (($argv[1] ?? '') === '--http') {
         check(array_column($links, 1) === ['/', '/releases', '/artists', '/about'], "TOC destinations: $path");
         check(array_column($links, 2) === ['Home', 'Releases', 'Artists', 'About'], "TOC order: $path");
         check(substr_count($html, '<main ') === 1 && substr_count($html, '</main>') === 1, "Main landmark: $path");
+        if (in_array($path, ['/releases', '/artists', '/about'], true)) {
+            preg_match('~<div class="top-line">(.*?)</div>~s', $html, $heading);
+            $headingContent = $heading[1] ?? '';
+            preg_match('~<h1>([^<]+)</h1>~', $headingContent, $title);
+            preg_match_all('~<use href="/icons\.svg#([^"]+)"></use>~', $headingContent, $sideIcons);
+            check(isset($title[1]) && count($sideIcons[1]) === 2 && $sideIcons[1][0] === $sideIcons[1][1], "Centered heading with matching side icons: $path");
+            check((bool) preg_match('~\.top-line h1\s*\{\s*flex:\s*1;\s*text-align:\s*center;~', $style), "Center heading text: $path");
+        }
+        if ($path === '/releases') {
+            check((bool) preg_match('~<div class="release-summary">\s*<p class="page-summary">.*?</p>\s*<nav class="view-links"~s', $html), 'Release count and view controls share a container');
+            check(substr_count($html, '<nav class="view-links"') === 1 && substr_count($html, '<a href="/releases?view=') === 3, 'Render exactly three release view controls');
+        }
         preg_match_all('~icons\.svg#([^"]+)~', $html, $icons);
         foreach (array_unique($icons[1]) as $id) {
             check(str_contains($sprite, 'id="' . $id . '"'), "Unknown rendered icon $id on $path");

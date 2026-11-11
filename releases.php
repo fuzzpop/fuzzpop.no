@@ -31,7 +31,17 @@ if ($releaseView === 'details') {
   <section class="standard colored prose"><h1>Invalid release view</h1><p><a href="/releases">Show releases</a></p></section>
   <?php else: ?>
   <?php require __DIR__ . '/releases_toc.php'; ?>
-  <p class="page-summary"><?php echo count($releases); ?> releases<?php if ($artistFilter !== ''): ?> by <?php echo escapeHtml($artistFilter); ?>. <a href="/releases">Show all releases</a><?php endif; ?></p>
+  <div class="release-summary">
+    <p class="page-summary"><?php echo count($releases); ?> releases<?php if ($artistFilter !== ''): ?> by <?php echo escapeHtml($artistFilter); ?>. <a href="/releases">Show all releases</a><?php endif; ?></p>
+    <nav class="view-links" aria-label="Release views">
+      <?php foreach (['grid' => 'Grid', 'details' => 'Details', 'table' => 'Table'] as $view => $label):
+          $query = ['view' => $view];
+          if ($artistFilter !== '') { $query['artist'] = $artistFilter; }
+      ?>
+      <a href="/releases?<?php echo escapeHtml(http_build_query($query, '', '&', PHP_QUERY_RFC3986)); ?>" title="<?php echo $label; ?>" aria-label="<?php echo $label; ?>"<?php if (($releaseView ?? '') === $view): ?> aria-current="page"<?php endif; ?>><svg class="icons" aria-hidden="true"><use href="/icons.svg#<?php echo 'view_' . ($view === 'details' ? 'list' : $view); ?>"></use></svg></a>
+      <?php endforeach; ?>
+    </nav>
+  </div>
   <?php if ($releaseView === 'table'): ?>
   <div class="table-scroll">
     <table class="sortable release-table">

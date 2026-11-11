@@ -6,7 +6,7 @@
 </head>
 <body>
   <?php require __DIR__ . '/toc.php'; ?>
-  <div class="top-line"><svg class="icons" aria-hidden="true"><use href="/icons.svg#about"></use></svg><h1>About</h1></div>
+  <div class="top-line"><svg class="icons" aria-hidden="true"><use href="/icons.svg#about"></use></svg><h1>About</h1><svg class="icons" aria-hidden="true"><use href="/icons.svg#about"></use></svg></div>
   <section class="standard colored prose">
     <h2>Fuzz Pop</h2>
     <p>Lofi hip hop, electro, indie and ambient!</p>

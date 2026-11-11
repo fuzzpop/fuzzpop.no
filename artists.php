@@ -12,7 +12,7 @@ $pageTitle = 'Artists';
   $artists = loadArtists();
   $releaseArtists = array_column(loadReleases(), 'artist');
   ?>
-  <div class="top-line"><svg class="icons" aria-hidden="true"><use href="/icons.svg#person"></use></svg><h1>Artists</h1></div>
+  <div class="top-line"><svg class="icons" aria-hidden="true"><use href="/icons.svg#person"></use></svg><h1>Artists</h1><svg class="icons" aria-hidden="true"><use href="/icons.svg#person"></use></svg></div>
   <div class="artist-grid">
     <?php foreach ($artists as $artist): ?>
     <?php $logoUrl = $artist['image'] === null ? null : $artist['image'] . '?v=' . filemtime(__DIR__ . $artist['image']); ?>
