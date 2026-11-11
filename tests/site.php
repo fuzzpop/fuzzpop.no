@@ -70,6 +70,12 @@ if (($argv[1] ?? '') === '--http') {
             check((bool) preg_match('~<div class="release-summary">\s*<p class="page-summary">.*?</p>\s*<nav class="view-links"~s', $html), 'Release count and view controls share a container');
             check(substr_count($html, '<nav class="view-links"') === 1 && substr_count($html, '<a href="/releases?view=') === 3, 'Render exactly three release view controls');
         }
+        if ($path === '/releases?view=details' || $path === '/releases?view=table') {
+            $element = $path === '/releases?view=table' ? 'th' : 'dt';
+            foreach (['Catalogue number' => 'hash', 'Format' => 'tag', 'Release date' => 'calendar'] as $label => $icon) {
+                check(str_contains($html, '<' . $element . '><svg class="entry-metadata-icon" aria-hidden="true"><use href="/icons.svg#' . $icon . '"></use></svg>' . $label . '</' . $element . '>'), "Small metadata icon for $label on $path");
+            }
+        }
         preg_match_all('~icons\.svg#([^"]+)~', $html, $icons);
         foreach (array_unique($icons[1]) as $id) {
             check(str_contains($sprite, 'id="' . $id . '"'), "Unknown rendered icon $id on $path");
@@ -88,6 +94,11 @@ if (($argv[1] ?? '') === '--http') {
         check($status === 200, "Release failed: $slug");
         check(!preg_match('~(?:Warning|Fatal error|Deprecated):~', $html), "Release diagnostics: $slug");
         check(str_contains($html, escapeHtml($release['title'])), "Missing release title: $slug");
+        foreach (['catalogue' => ['Catalogue number', 'hash'], 'format' => ['Format', 'tag'], 'description' => ['Description', 'text'], 'tracks' => ['Tracks', 'hash'], 'duration' => ['Duration', 'clock'], 'date' => ['Release date', 'calendar']] as $field => [$label, $icon]) {
+            if ($release[$field] !== '') {
+                check(str_contains($html, '<dt><svg class="entry-metadata-icon" aria-hidden="true"><use href="/icons.svg#' . $icon . '"></use></svg>' . $label . '</dt>'), "Small metadata icon for $label on $slug");
+            }
+        }
     }
     foreach ($artists as $artist) {
         [, $html] = response('/releases?artist=' . rawurlencode($artist['name']));

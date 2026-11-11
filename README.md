@@ -14,6 +14,9 @@ Table columns resize by dragging a header's right edge, using Pekosoft's
 column-sizing behavior. Double-click that edge (or double-tap on touch screens)
 to restore its initial width. Header clicks still sort; resize gestures do not.
 The table scrolls within the available content width, including with sidebars open.
+Release metadata labels and table headings use the shared 16px icons, matching
+the other sites (hash for catalogue numbers and track counts, tag for format,
+text for description, clock for duration, and calendar for release date).
 
 The existing `/disco?a=SLUG`, `/disco_grid`,
 `/disco_table` and `/disco_details` links remain supported. `.htaccess`

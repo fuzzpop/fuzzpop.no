@@ -148,6 +148,7 @@ footer { margin: 20px auto 0; padding: 8px 8px 32px; }
 .release-cover img, .full { display: block; height: auto; margin: 0 auto; max-width: 100%; }
 .entry-text { overflow-wrap: anywhere; padding: 16px; }
 .entry-text p:last-child { margin-bottom: 0; }
+.entry-metadata-icon { display: inline-block; fill: var(--white); height: 16px; margin-right: 6px; vertical-align: 0.03em; width: 16px; }
 .release-details { grid-template-columns: minmax(0, 1fr); }
 .release-details .release-card { align-items: start; display: flex; gap: 16px; text-align: left; }
 .release-details .release-cover { flex: none; margin: 16px 0 16px 16px; max-width: 40%; width: 240px; }

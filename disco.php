@@ -39,8 +39,8 @@ if ($release === null) {
     <?php if ($release['spotify'] !== ''): ?></a><?php endif; ?>
     <div class="entry-text">
       <dl>
-        <?php foreach (['catalogue' => 'Catalogue number', 'format' => 'Format', 'description' => 'Description', 'tracks' => 'Tracks', 'duration' => 'Duration', 'date' => 'Release date'] as $field => $label): if ($release[$field] === '') { continue; } ?>
-        <div><dt><?php echo $label; ?></dt><dd><?php echo escapeHtml($release[$field]); ?></dd></div>
+        <?php foreach (['catalogue' => ['Catalogue number', 'hash'], 'format' => ['Format', 'tag'], 'description' => ['Description', 'text'], 'tracks' => ['Tracks', 'hash'], 'duration' => ['Duration', 'clock'], 'date' => ['Release date', 'calendar']] as $field => [$label, $icon]): if ($release[$field] === '') { continue; } ?>
+        <div><dt><svg class="entry-metadata-icon" aria-hidden="true"><use href="/icons.svg#<?php echo $icon; ?>"></use></svg><?php echo $label; ?></dt><dd><?php echo escapeHtml($release[$field]); ?></dd></div>
         <?php endforeach; ?>
       </dl>
       <?php if (is_file(__DIR__ . "/tracklists/$slug.txt")): ?>

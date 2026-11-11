@@ -48,7 +48,11 @@ if ($releaseView === 'details') {
   <?php if ($releaseView === 'table'): ?>
   <div class="table-scroll">
     <table class="sortable release-table">
-      <thead><tr><th>Cover</th><th>Artist</th><th>Title</th><th>Catalogue number</th><th>Format</th><th>Release date</th><th>Spotify</th></tr></thead>
+      <thead><tr>
+        <?php foreach (['Cover' => 'lp', 'Artist' => 'person', 'Title' => 'text', 'Catalogue number' => 'hash', 'Format' => 'tag', 'Release date' => 'calendar', 'Spotify' => 'spotify'] as $label => $icon): ?>
+        <th><svg class="entry-metadata-icon" aria-hidden="true"><use href="/icons.svg#<?php echo $icon; ?>"></use></svg><?php echo $label; ?></th>
+        <?php endforeach; ?>
+      </tr></thead>
       <tbody>
       <?php foreach ($releases as $release): ?>
       <tr>
@@ -74,8 +78,8 @@ if ($releaseView === 'details') {
         <p><?php if ($release['artistUrl'] !== ''): ?><a href="<?php echo escapeHtml($release['artistUrl']); ?>"><?php endif; ?><?php echo escapeHtml($release['artist']); ?><?php if ($release['artistUrl'] !== ''): ?></a><?php endif; ?></p>
         <?php if ($releaseView === 'details'): ?>
         <dl>
-          <?php foreach (['catalogue' => 'Catalogue number', 'format' => 'Format', 'duration' => 'Duration', 'date' => 'Release date'] as $field => $label): if ($release[$field] === '') { continue; } ?>
-          <div><dt><?php echo $label; ?></dt><dd><?php echo escapeHtml($release[$field]); ?></dd></div>
+          <?php foreach (['catalogue' => ['Catalogue number', 'hash'], 'format' => ['Format', 'tag'], 'duration' => ['Duration', 'clock'], 'date' => ['Release date', 'calendar']] as $field => [$label, $icon]): if ($release[$field] === '') { continue; } ?>
+          <div><dt><svg class="entry-metadata-icon" aria-hidden="true"><use href="/icons.svg#<?php echo $icon; ?>"></use></svg><?php echo $label; ?></dt><dd><?php echo escapeHtml($release[$field]); ?></dd></div>
           <?php endforeach; ?>
         </dl>
         <?php endif; ?>
