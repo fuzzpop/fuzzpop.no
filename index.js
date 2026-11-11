@@ -107,7 +107,12 @@ async function shareCurrentPage() {
 
 function resetSettings() {
   localStorage.clear();
-  window.location.reload();
+  const url = new URL(window.location.href);
+  if (url.pathname === '/releases') {
+    url.searchParams.delete('view');
+    url.searchParams.delete('artist');
+  }
+  window.location.replace(url.href);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
