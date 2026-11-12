@@ -11,7 +11,7 @@
 * { box-sizing: border-box; }
 html { background: var(--black); }
 body {
-  background: transparent;
+  background: var(--black);
   color: var(--white);
   font: 22px/1.5 Arial, sans-serif;
   margin: 0;
@@ -173,15 +173,16 @@ dt::after { content: ": "; }
 .release-table.resizable-columns th.column-resizing, .release-table.resizable-columns td.column-resizing { border-right: 1px solid var(--color1); }
 .release-table tbody tr:hover { background: var(--grey1); }
 .table-cover { display: block; height: 50px; width: auto; }
-.invert-colors body > :not(.top-heading),
-.invert-colors .top-heading > .heading,
-.invert-colors .settings-toggle,
-.invert-colors .toc-container,
-.invert-colors .settings-panel { filter: invert(1) hue-rotate(180deg); }
-.invert-colors .top-heading { background: #ddd; }
-.invert-colors .toc-container .settings-toggle,
-.invert-colors .settings-panel .settings-toggle { filter: none; }
-.invert-colors .bitmap, .invert-colors img:not([src*=".svg" i]) { filter: invert(1) hue-rotate(180deg); }
+.invert-colors {
+  --color1: #23a3ff;
+  --color2: #ff6eff;
+  --grey1: #ddd;
+  --grey2: #bbb;
+  --white: #000;
+  --black: #fff;
+  color-scheme: light;
+}
+.invert-colors img[src*=".svg" i] { filter: invert(1); }
 
 @media (min-width: 800px) {
   :root { --sidebar-width: min(320px, 28vw); --site-frame-offset: max(0px, calc((100vw - var(--maxwidth)) / 2)); }

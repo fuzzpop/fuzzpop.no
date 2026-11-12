@@ -6,7 +6,11 @@ its home link, and the responsive TOC and Settings sidebars follow the sibling
 sites. Desktop sidebars open by default
 and remember their state; phone menus open one at a time. Settings provides
 Dark mode, Fullscreen, Share and Reset. Original bitmap colors are preserved
-in Light mode.
+in Light mode. Dark/Light mode uses the shared light palette for the page
+background, header and sidebars, with the existing saved Settings choice.
+Palette variables replace page inversion so raster images and bitmap
+backgrounds stay unfiltered; counter-inversion with hue rotation can otherwise
+change saturated artwork. Only monochrome external SVG logos are inverted.
 
 Releases supports `?view=grid` (default), `?view=details` and `?view=table`,
 plus `?artist=NAME`.
