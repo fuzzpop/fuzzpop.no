@@ -10,6 +10,7 @@ $pageTitle = isset($pageTitle) ? 'Fuzz Pop - ' . $pageTitle : 'Fuzz Pop';
 <link rel="icon" href="/favicon.svg?v=<?php echo filemtime(__DIR__ . '/favicon.svg'); ?>" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css?v=<?php echo filemtime(__DIR__ . '/style.css'); ?>">
 <script src="/index.js?v=<?php echo filemtime(__DIR__ . '/index.js'); ?>" defer></script>
+<script src="/swipe.js?v=<?php echo filemtime(__DIR__ . '/swipe.js'); ?>" defer></script>
 <meta property="og:image" content="https://fuzzpop.no/img/logo.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:title" content="<?php echo escapeHtml($pageTitle); ?>">
