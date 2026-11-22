@@ -34,7 +34,7 @@ main > :first-child { margin-top: 0; }
 .icons { display: block; fill: var(--white); flex: none; height: 32px; width: 32px; }
 .colored { background: var(--grey1); }
 main, footer { margin: 0 auto; max-width: var(--maxwidth); min-width: 0; }
-.standard { margin: 16px auto; max-width: 1024px; }
+.standard { margin: 16px auto; }
 .prose { overflow-wrap: anywhere; padding: 16px; }
 address { font-style: normal; }
 .top-line {
@@ -119,9 +119,11 @@ address { font-style: normal; }
   width: 100%;
 }
 .settings-panel .toc-button { color: var(--white); cursor: pointer; }
+.toc-container li a { color: var(--white); }
+.toc-container li a .icons { fill: currentColor; }
 .toc-container li a:hover, .settings-panel .toc-button:hover { background: var(--grey2); }
 .toc-container a:hover .icons, .toc-button:hover .icons { opacity: 1; }
-.toc-container a[aria-current] { background: var(--grey2); }
+.toc-container li a[aria-current="page"] { background: var(--grey2); color: var(--color1); }
 .settings-panel .button-on, .settings-panel .button-on .icons { color: var(--color1); fill: var(--color1); }
 .settings-panel button:disabled { cursor: default; opacity: 0.5; }
 .toc-close-wrap { display: flex; justify-content: center; padding: 10px 10px 24px; }
