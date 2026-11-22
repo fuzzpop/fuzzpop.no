@@ -1,5 +1,6 @@
 
 RewriteEngine on
+RewriteRule ^updates_view\.php$ - [F,L]
 RewriteRule ^(?:data|tests)(?:/|$) - [F,L]
 <FilesMatch "^(?:functions|head|footer|toc|releases_toc)\.php$">
     Require all denied
@@ -13,8 +14,8 @@ Options -MultiViews
 DirectorySlash Off
 RewriteCond %{THE_REQUEST} "\s/+index\.php[?\s]" [NC]
 RewriteRule ^index\.php$ / [R=301,L]
-RewriteCond %{THE_REQUEST} "\s/+(releases|artists|about|disco|disco_grid|disco_table|disco_details)\.php[?\s]" [NC]
-RewriteRule ^(releases|artists|about|disco|disco_grid|disco_table|disco_details)\.php$ /$1 [R=301,L]
-RewriteRule ^(releases|artists|about|disco|disco_grid|disco_table|disco_details)/$ /$1 [R=301,L]
+RewriteCond %{THE_REQUEST} "\s/+(releases|artists|about|disco|disco_grid|disco_table|disco_details|updates)\.php[?\s]" [NC]
+RewriteRule ^(releases|artists|about|disco|disco_grid|disco_table|disco_details|updates)\.php$ /$1 [R=301,L]
+RewriteRule ^(releases|artists|about|disco|disco_grid|disco_table|disco_details|updates)/$ /$1 [R=301,L]
 RewriteCond %{DOCUMENT_ROOT}/$1.php -f
-RewriteRule ^(releases|artists|about|disco|disco_grid|disco_table|disco_details)$ $1.php [END]
+RewriteRule ^(releases|artists|about|disco|disco_grid|disco_table|disco_details|updates)$ $1.php [END]

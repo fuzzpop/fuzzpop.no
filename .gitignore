@@ -8,6 +8,7 @@
 error_log
 error_log.*
 *.log
+/data/updates.json
 *.bak
 *.tmp
 .well-known/acme-challenge/

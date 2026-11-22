@@ -2,7 +2,7 @@
 require_once __DIR__ . '/functions.php';
 $canonicalPath = preg_replace('~\.php(?=\?|$)~', '', $_SERVER['REQUEST_URI'] ?? '/');
 $canonicalPath = preg_replace('~^/index(?=\?|$)~', '/', $canonicalPath);
-$canonicalUrl = 'https://fuzzpop.no' . $canonicalPath;
+$canonicalUrl = $canonicalUrl ?? ('https://fuzzpop.no' . $canonicalPath);
 $pageTitle = isset($pageTitle) ? 'Fuzz Pop - ' . $pageTitle : 'Fuzz Pop';
 ?>
 <title><?php echo escapeHtml($pageTitle); ?></title>

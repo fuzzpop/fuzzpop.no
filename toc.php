@@ -13,6 +13,7 @@
             ['/releases', 'Releases', 'lp'],
             ['/artists', 'Artists', 'person'],
             ['/about', 'About', 'about'],
+            ['/updates', 'Updates', 'github'],
         ] as [$url, $label, $icon]):
         ?>
         <li><a href="<?php echo $url; ?>"<?php if ($currentSection === $url): ?> aria-current="page"<?php endif; ?>><svg class="icons" aria-hidden="true"><use href="/icons.svg#<?php echo $icon; ?>"></use></svg><?php echo $label; ?></a></li>

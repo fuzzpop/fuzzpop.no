@@ -3,6 +3,7 @@
   <div class="footer-socials">
     <a href="https://facebook.com/fuzzpop" title="Facebook" aria-label="Facebook"><svg class="icons" aria-hidden="true"><use href="/icons.svg#facebook"></use></svg></a>
     <a href="https://youtube.com/@fuzzpop7785" title="YouTube" aria-label="YouTube"><svg class="icons" aria-hidden="true"><use href="/icons.svg#youtube"></use></svg></a>
+    <a href="https://github.com/fuzzpop/fuzzpop.no" title="GitHub" aria-label="GitHub"><svg class="icons" aria-hidden="true"><use href="/icons.svg#github"></use></svg></a>
   </div>
   <div class="footer-branding">
     <div class="footer-credit">
