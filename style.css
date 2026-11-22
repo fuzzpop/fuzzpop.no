@@ -16,7 +16,7 @@ body {
   font: 22px/1.5 Arial, sans-serif;
   margin: 0;
   min-height: 100vh;
-  padding-top: 48px;
+  padding-top: 64px;
   text-align: center;
 }
 h1, h2 { font-size: 28px; line-height: 1.25; margin: 0; }
@@ -29,6 +29,7 @@ a:hover .icons, button:hover .icons, a:hover > img { opacity: 0.8; }
 button { font: inherit; }
 button:focus-visible, a:focus-visible { outline: 2px solid var(--color1); outline-offset: 2px; }
 [hidden] { display: none; }
+::selection { background-color: var(--color1); color: var(--white); }
 .icons { display: block; fill: var(--white); flex: none; height: 32px; width: 32px; }
 .colored { background: var(--grey1); }
 main, footer { margin: 0 auto; max-width: var(--maxwidth); min-width: 0; }
@@ -56,6 +57,8 @@ address { font-style: normal; }
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
   height: 48px;
   left: 0;
+  margin: 0 auto;
+  max-width: var(--maxwidth);
   padding: 8px;
   position: fixed;
   right: 0;
