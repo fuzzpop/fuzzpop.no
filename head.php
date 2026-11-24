@@ -8,6 +8,7 @@ $ogImageSize = getimagesize(__DIR__ . '/img/logo.png');
 ?>
 <title><?php echo escapeHtml($pageTitle); ?></title>
 <meta charset="utf-8">
+<script src="/resize_table.js?v=<?php echo filemtime(__DIR__ . '/resize_table.js'); ?>" defer></script>
 <link rel="icon" href="/favicon.svg?v=<?php echo filemtime(__DIR__ . '/favicon.svg'); ?>" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css?v=<?php echo filemtime(__DIR__ . '/style.css'); ?>">
 <script src="/index.js?v=<?php echo filemtime(__DIR__ . '/index.js'); ?>" defer></script>

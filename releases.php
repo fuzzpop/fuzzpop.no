@@ -25,7 +25,6 @@ if ($releaseView === 'details') {
   <?php require __DIR__ . '/head.php'; ?>
   <?php if ($releaseView === 'table'): ?>
   <script src="/sort_table.js" defer></script>
-  <script src="/resize_table.js?v=<?php echo filemtime(__DIR__ . '/resize_table.js'); ?>" defer></script>
   <?php endif; ?>
 </head>
 <body>

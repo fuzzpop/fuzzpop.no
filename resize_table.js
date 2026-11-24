@@ -28,9 +28,14 @@ function setupResizableTables() {
     let resizeMoved = false;
     let defaultsAreFinalized = false;
     let suppressSortClick = false;
+    let previousMinimumTableWidth = 0;
 
     const getResizeEdgeWidth = (event) => event.pointerType === 'touch' ? 24 : 8;
-    const getMinimumTableWidth = () => table.parentElement?.clientWidth || 0;
+    const getMinimumTableWidth = () => {
+      const minimumWidth = getComputedStyle(table).minWidth;
+      return Math.max(table.parentElement?.clientWidth || 0,
+        minimumWidth?.endsWith('px') ? parseFloat(minimumWidth) : 0);
+    };
     const rebaseColumnWidths = (headers, updateDefaults = false) => {
       const widths = headers.map((header) => ({
         header,
@@ -69,6 +74,16 @@ function setupResizableTables() {
         return width + Number(header.dataset.columnWidth || 0);
       }, 0);
       const minimumTableWidth = getMinimumTableWidth();
+      if (previousMinimumTableWidth > 0 && minimumTableWidth > 0
+        && minimumTableWidth !== previousMinimumTableWidth) {
+        const scale = minimumTableWidth / previousMinimumTableWidth;
+        headers.forEach((header) => {
+          header.dataset.columnWidth = String(Number(header.dataset.columnWidth) * scale);
+          header.dataset.defaultColumnWidth = String(Number(header.dataset.defaultColumnWidth) * scale);
+          header.style.width = `${header.dataset.columnWidth}px`;
+        });
+      }
+      previousMinimumTableWidth = minimumTableWidth;
       if (totalWidth < minimumTableWidth) {
         rebaseColumnWidths(headers);
       }
@@ -83,11 +98,20 @@ function setupResizableTables() {
       if (!resizingHeader) return;
       setResizingColumn(resizingHeader, false);
       resizingHeader = null;
+      syncColumnWidths();
+    };
+
+    const updateResizeGuide = (header) => {
+      const left = header.getBoundingClientRect().right - table.getBoundingClientRect().left - table.clientLeft;
+      table.style.setProperty('--column-resize-guide-left', `${left}px`);
     };
 
     const setResizingColumn = (header, isResizing) => {
       const columnIndex = getVisibleHeaders().indexOf(header);
       if (columnIndex < 0) return;
+
+      if (isResizing) updateResizeGuide(header);
+      else table.style.removeProperty('--column-resize-guide-left');
 
       [...table.rows].forEach((row) => {
         if (row.parentElement?.tagName === 'TFOOT') return;
@@ -97,6 +121,7 @@ function setupResizableTables() {
 
     const reset = () => {
       finishResize();
+      previousMinimumTableWidth = 0;
       table.classList.remove('resizable-columns');
       table.style.removeProperty('width');
       table.querySelectorAll('thead th').forEach((header) => {
@@ -130,6 +155,7 @@ function setupResizableTables() {
         resizingHeader.dataset.columnWidth = String(Math.round(width));
         resizingHeader.style.width = `${Math.round(width)}px`;
         table.style.width = `${Math.max(getMinimumTableWidth(), Math.round(startTableWidth + widthChange))}px`;
+        updateResizeGuide(resizingHeader);
         return;
       }
 
@@ -254,7 +280,11 @@ function setupResizableTables() {
       childList: true,
       subtree: true
     });
+    const sizeObserver = new ResizeObserver(() => {
+      window.requestAnimationFrame(syncColumnWidths);
+    });
+    sizeObserver.observe(table.parentElement);
   });
 }
 
-document.addEventListener('DOMContentLoaded', setupResizableTables);
+document.addEventListener('DOMContentLoaded', () => window.requestAnimationFrame(setupResizableTables));
