@@ -27,3 +27,4 @@ $ogImageSize = getimagesize(__DIR__ . '/img/logo.png');
 <meta name="description" content="This is the official website for the record label Fuzz Pop.">
 <link rel="canonical" href="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">  
+<?php require __DIR__ . '/site_ui.php'; ?>

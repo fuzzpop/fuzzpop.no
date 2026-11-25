@@ -5,7 +5,11 @@ The main navigation is **Home**, **Releases**, **Artists**, **About**, using `/`
 its home link, and the responsive TOC and Settings sidebars follow the sibling
 sites. Desktop sidebars open by default
 and remember their state; phone menus open one at a time. Settings provides
-Dark mode, Fullscreen, Share and Reset. Original bitmap colors are preserved
+Dark mode, Fullscreen, Share, Background and Reset. Background starts off and
+uses the existing photographic Silentlab release image. The TOC starts with
+Home, Previous page, Play and Next page. Shared component copies `site_ui.php`,
+`site_ui.css` and `site_ui.js` are maintained from Pekosoft, with the local
+image configured in `data/site_ui.json`. Original bitmap colors are preserved
 in Light mode. Dark/Light mode uses the shared light palette for the page
 background, header and sidebars, with the existing saved Settings choice.
 Palette variables replace page inversion so raster images and bitmap
